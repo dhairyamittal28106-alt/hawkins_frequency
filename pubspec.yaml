@@ -1,0 +1,33 @@
+name: hawkins_frequency
+description: Turn your smartphone into a cursed object from 1985.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camera: ^0.10.6
+  google_mlkit_face_detection: ^0.10.0
+  sensors_plus: ^5.0.0
+  just_audio: ^0.9.38
+  shared_preferences: ^2.3.0
+  path_provider: ^2.1.2
+  google_fonts: ^6.2.1           # ← For Stranger Things retro font (Bangers)
+  permission_handler: ^11.3.1     # ← Camera & storage permissions
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/audio/psychic_hum.mp3
+    - assets/audio/beep.mp3
+    - assets/audio/light_on.mp3
+    - assets/audio/light_off.mp3
