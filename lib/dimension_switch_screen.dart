@@ -40,7 +40,7 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
     _bikeController = AnimationController(vsync: this, duration: const Duration(seconds: 20))..repeat();
     _hopperController = AnimationController(vsync: this, duration: const Duration(seconds: 8));
     
-    // Border Blink: Starts immediately in "Safe Mode"
+    
     _borderController = AnimationController(vsync: this, duration: const Duration(seconds: 3))..repeat(reverse: true);
 
     Timer.periodic(const Duration(seconds: 20), (_) {
@@ -82,14 +82,14 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
 
     if (isUpsideDown) {
       _flickerController.repeat(reverse: true);
-      // DANGER MODE: Fast flashing
+      
       _borderController.duration = const Duration(milliseconds: 300);
       _borderController.repeat(reverse: true);
       _startToxicity();
     } else {
       _flickerController.stop();
       _flickerController.value = 1.0;
-      // SAFE MODE: Slow pulsing
+      
       _borderController.duration = const Duration(seconds: 3);
       _borderController.repeat(reverse: true);
       _stopToxicity();
@@ -118,7 +118,7 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
     _stopToxicity();
     setState(() {
       isUpsideDown = false;
-      // Reset border to Safe Mode
+      
       _borderController.duration = const Duration(seconds: 3);
       _borderController.repeat(reverse: true);
     });
@@ -147,7 +147,7 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
     final bool hasEnergy = EnergyManager.energy > 0;
 
     return CRTScreenEffect(
-      // PERIMETER BLINK LOGIC
+      
       child: AnimatedBuilder(
         animation: _borderController,
         builder: (context, child) {
@@ -179,26 +179,26 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
                 if (!isUpsideDown) ...[
                   Positioned(bottom: 0, left: _parallaxX, child: CustomPaint(size: Size(size.width + 100, 250), painter: ForestSilhouettePainter())),
                   
-                  // --- FIX 1: KIDS ON BIKES (Moved UP to 20%) ---
+                  
                   AnimatedBuilder(
                     animation: _bikeController, 
                     builder: (context, child) { 
                       final dx = size.width + 200 - (_bikeController.value * (size.width + 400)); 
                       return Positioned(
-                        top: size.height * 0.20, // Higher up to clear title
+                        top: size.height * 0.20, 
                         left: dx, 
                         child: CustomPaint(painter: KidsOnBikesPainter(), size: const Size(130, 60))
                       ); 
                     }
                   ),
                   
-                  // --- FIX 2: HOPPER (Moved DOWN to 360px from bottom) ---
+                  
                   AnimatedBuilder(
                     animation: _hopperController, 
                     builder: (context, child) { 
                       final dx = -200 + (_hopperController.value * (size.width + 400)); 
                       return Positioned(
-                        bottom: 360, // Lower down to clear the button
+                        bottom: 360, 
                         left: dx, 
                         child: HopperCruiserWidget()
                       ); 
@@ -272,7 +272,7 @@ class _DimensionSwitchScreenState extends State<DimensionSwitchScreen> with Tick
   }
 }
 
-// === PAINTERS & WIDGETS === (Unchanged)
+
 class HopperCruiserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

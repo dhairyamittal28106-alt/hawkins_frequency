@@ -11,7 +11,7 @@ class EnergyManager {
     final prefs = await SharedPreferences.getInstance();
     _energy = prefs.getInt(_energyKey) ?? 100;
 
-    // Offline regeneration
+    
     final lastTime = prefs.getInt(_lastRegenKey) ?? DateTime.now().millisecondsSinceEpoch;
     final now = DateTime.now().millisecondsSinceEpoch;
     final elapsedSeconds = (now - lastTime) ~/ 1000;
@@ -22,7 +22,7 @@ class EnergyManager {
     }
     await prefs.setInt(_lastRegenKey, now);
 
-    // Periodic regeneration
+    
     _regenTimer = Timer.periodic(const Duration(seconds: 30), (_) async {
       if (_energy < 100) {
         _energy += 1;

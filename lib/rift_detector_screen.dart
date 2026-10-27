@@ -16,16 +16,16 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
   final AudioPlayer _beepPlayer = AudioPlayer();
   StreamSubscription<MagnetometerEvent>? _magSubscription;
 
-  // Scientific variables
+  
   double _currentMagnitude = 0.0;
   double _baseline = 0.0;
   bool _isCalibrating = true;
   List<double> _calibrationBuffer = [];
   
-  // New: Compass Direction Variable
+  
   double _needleAngle = 0.0;
   
-  // UI variables
+  
   double _anomalyStrength = 0.0; 
   List<Offset> _distortions = [];
   late AnimationController _pulseController;
@@ -52,12 +52,12 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
     _magSubscription = magnetometerEvents.listen((event) {
       if (!mounted) return;
 
-      // 1. Calculate Magnitude (Total Strength)
+      
       final rawMagnitude = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
       
-      // 2. Calculate Direction (Compass Heading)
-      // atan2(y, x) gives the angle of the magnetic vector
-      // We add pi/2 because Flutter's 0 degrees is "East/Right", but we want "North/Up"
+      
+      
+      
       double heading = atan2(event.y, event.x) - pi/2; 
 
       if (_isCalibrating) {
@@ -69,11 +69,11 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
         return;
       }
 
-      // Smooth the magnitude (Low-pass filter)
+      
       _currentMagnitude = (rawMagnitude * 0.1) + (_currentMagnitude * 0.9);
       
-      // Smooth the needle rotation so it doesn't jitter too much
-      // Simple lerp for angle (handling the -pi to pi wrap-around is complex, simplified here)
+      
+      
       _needleAngle = heading; 
 
       double deviation = (_currentMagnitude - _baseline).abs();
@@ -146,10 +146,10 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
         ),
         body: Stack(
           children: [
-            // Radar Grid
+            
             CustomPaint(painter: RadarGridPainter(), size: Size.infinite),
 
-            // Glitches
+            
             ..._distortions.map((offset) => Positioned(
               left: offset.dx,
               top: offset.dy,
@@ -166,12 +166,12 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
               ),
             )),
 
-            // Main Scanner UI
+            
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // THE COMPASS HOUSING
+                  
                   Container(
                     width: 320,
                     height: 320,
@@ -187,20 +187,20 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // 1. Cardinal Directions (Static)
+                        
                         const Text("N", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 18)),
                         const Positioned(bottom: 10, child: Text("S", style: TextStyle(color: Colors.grey, fontSize: 14))),
                         const Positioned(left: 10, child: Text("W", style: TextStyle(color: Colors.grey, fontSize: 14))),
                         const Positioned(right: 10, child: Text("E", style: TextStyle(color: Colors.grey, fontSize: 14))),
 
-                        // 2. Calibration Spinner
+                        
                         if (_isCalibrating)
                           const SizedBox(
                             width: 280, height: 280,
                             child: CircularProgressIndicator(color: Colors.yellow, strokeWidth: 1),
                           ),
 
-                        // 3. Pulse Ring (Detection)
+                        
                         if (!_isCalibrating)
                         AnimatedBuilder(
                           animation: _pulseController,
@@ -217,7 +217,7 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
                           ),
                         ),
 
-                        // 4. THE COMPASS NEEDLE (Rotates)
+                        
                         if (!_isCalibrating)
                           Transform.rotate(
                             angle: _needleAngle,
@@ -228,7 +228,7 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
                             ),
                           ),
                           
-                        // 5. Center Pivot Pin
+                        
                         Container(
                           width: 12, height: 12,
                           decoration: BoxDecoration(
@@ -243,7 +243,7 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
                   
                   const SizedBox(height: 50),
                   
-                  // Text Readout
+                  
                   Text(
                     statusText,
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
@@ -255,7 +255,7 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
                   
                   const SizedBox(height: 20),
                   
-                  // Signal Bar
+                  
                   Container(
                     width: 300,
                     height: 24,
@@ -285,7 +285,7 @@ class _RiftDetectorScreenState extends State<RiftDetectorScreen> with TickerProv
   }
 }
 
-// 🧭 RETRO NEEDLE PAINTER
+
 class RetroNeedlePainter extends CustomPainter {
   final Color color;
   RetroNeedlePainter({required this.color});
@@ -298,25 +298,25 @@ class RetroNeedlePainter extends CustomPainter {
     final centerX = size.width / 2;
     final centerY = size.height / 2;
 
-    // 1. Draw Red Tip (North / Pointing to Danger)
+    
     paint.color = Colors.red;
     final northPath = Path();
-    northPath.moveTo(centerX, 0); // Tip
-    northPath.lineTo(centerX + 8, centerY); // Right Base
-    northPath.lineTo(centerX - 8, centerY); // Left Base
+    northPath.moveTo(centerX, 0); 
+    northPath.lineTo(centerX + 8, centerY); 
+    northPath.lineTo(centerX - 8, centerY); 
     northPath.close();
     canvas.drawPath(northPath, paint);
 
-    // 2. Draw White Tail (South)
+    
     paint.color = Colors.white70;
     final southPath = Path();
-    southPath.moveTo(centerX, size.height); // Tip
-    southPath.lineTo(centerX + 8, centerY); // Right Base
-    southPath.lineTo(centerX - 8, centerY); // Left Base
+    southPath.moveTo(centerX, size.height); 
+    southPath.lineTo(centerX + 8, centerY); 
+    southPath.lineTo(centerX - 8, centerY); 
     southPath.close();
     canvas.drawPath(southPath, paint);
     
-    // 3. Draw Shine/Detail
+    
     paint.color = Colors.black26;
     canvas.drawLine(Offset(centerX, 0), Offset(centerX, size.height), paint..strokeWidth = 1);
   }

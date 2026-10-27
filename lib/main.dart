@@ -19,15 +19,15 @@ class HawkinsFrequencyApp extends StatelessWidget {
       title: 'The Hawkins Frequency',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF050505),
-        primaryColor: const Color(0xFFE71D36), // Hawkins Red
+        primaryColor: const Color(0xFFE71D36), 
         colorScheme: const ColorScheme.dark(
           primary: Color(0xFFE71D36),
-          secondary: Color(0xFF00FFC5), // Sci-Fi Cyan
+          secondary: Color(0xFF00FFC5), 
           surface: Color(0xFF121212),
         ),
         textTheme: TextTheme(
-          displayLarge: GoogleFonts.rubikGlitch(fontSize: 48, color: const Color(0xFFE71D36)), // Horror Title
-          bodyLarge: GoogleFonts.shareTechMono(fontSize: 18, color: Colors.white70), // Lab Terminal
+          displayLarge: GoogleFonts.rubikGlitch(fontSize: 48, color: const Color(0xFFE71D36)), 
+          bodyLarge: GoogleFonts.shareTechMono(fontSize: 18, color: Colors.white70), 
           bodyMedium: GoogleFonts.shareTechMono(fontSize: 16, color: Colors.white60),
         ),
       ),

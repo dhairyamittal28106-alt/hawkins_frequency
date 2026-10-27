@@ -1,16 +1,22 @@
-# hawkins_frequency
+# The Hawkins Frequency
 
-A new Flutter project.
+A Stranger Things-inspired Flutter experience with a retro CRT look and interactive "other dimension" tools. The screens include a dimension-switch scene, a camera-based psychic-focus experience, a sensor-driven rift detector, and a Christmas-lights chat. Camera, face-detection, motion-sensor, and audio packages power the effects.
 
-## Getting Started
+## Run locally
 
-This project is a starting point for a Flutter application.
+Install Flutter 3.10 or newer, then run:
 
-A few resources to get you started if this is your first Flutter project:
+    flutter pub get
+    flutter run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Allow camera and sensor permissions when prompted. Some features depend on device hardware and may not work in an emulator.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Project layout
+
+- `lib/dimension_switch_screen.dart`: main dimension-switch experience
+- `lib/psychic_focus_screen.dart`: camera and face-detection interaction
+- `lib/rift_detector_screen.dart`: sensor-based compass/rift display
+- `lib/christmas_lights_chat_screen.dart`: light-sequence interaction
+- `assets/audio/`: bundled sound effects
+
+The interface and audio are a fan-made prototype and are not affiliated with the Stranger Things series or its rights holders.

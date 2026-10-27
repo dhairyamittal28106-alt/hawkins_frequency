@@ -32,12 +32,12 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
   Point<int>? _lastNosePos;
   bool _faceFound = false;
   bool _isShaky = false;
-  bool _hasNosebleed = false; // State to track if effect is active
+  bool _hasNosebleed = false; 
   
   late AnimationController _shakeController;
   late AnimationController _recordBlinker;
   
-  // New Blood Logic: Single Stream
+  
   Offset? _nosePosition;
   double _dripLength = 0.0;
 
@@ -123,7 +123,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
         _lastNosePos = noseBase;
         _focusProgress = _focusProgress.clamp(0.0, 1.0);
 
-        // Update Coordinates for painting
+        
         _updateNoseCoordinates(noseBase);
 
         if (mounted) {
@@ -132,19 +132,19 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
             _audioPlayer.setVolume(_focusProgress); 
             _audioPlayer.setPitch(1.0 + (_focusProgress * 1.5)); 
             
-            // Trigger logic
+            
             if (_focusProgress >= 0.95) {
               if (!_hasNosebleed && EnergyManager.energy > 10) {
                  EnergyManager.consume(10);
                  _hasNosebleed = true;
                  _shakeController.repeat(reverse: true);
               }
-              // Grow the drip if active
+              
               if (_hasNosebleed) {
-                _dripLength = (_dripLength + 2.0).clamp(0.0, 60.0); // Max length 60px (short)
+                _dripLength = (_dripLength + 2.0).clamp(0.0, 60.0); 
               }
             } else {
-               // If focus lost, reset slowly
+               
                _hasNosebleed = false;
                _dripLength = 0.0;
                _shakeController.stop();
@@ -175,7 +175,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
     final double noseX = size.width - (nose.x * scaleX); 
     final double noseY = nose.y * scaleY;
     
-    // Shift slightly to the RIGHT nostril (user's left) for authenticity
+    
     _nosePosition = Offset(noseX - 10, noseY); 
   }
 
@@ -221,7 +221,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
                 child: CameraPreview(_controller!),
               ),
 
-            // UI OVERLAY
+            
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -249,8 +249,8 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
                       ],
                     ),
 
-                    // RETICLE (Disappears when nosebleed starts)
-                    // This fixes your request: "Circle should go away"
+                    
+                    
                     if (_faceFound && EnergyManager.energy > 10 && !_hasNosebleed)
                     Center(
                       child: Column(
@@ -280,7 +280,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
                       ),
                     ),
 
-                    // Bottom Text always visible
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -301,7 +301,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
               ),
             ),
             
-            // THE NEW BLOOD PAINTER
+            
             if (_nosePosition != null)
               CustomPaint(
                 painter: ElevenNosebleedPainter(
@@ -317,7 +317,7 @@ class _PsychicFocusScreenState extends State<PsychicFocusScreen> with TickerProv
   }
 }
 
-// 🎨 NEW PAINTER: Looks like a single thick dark stream
+
 class ElevenNosebleedPainter extends CustomPainter {
   final Offset startPos;
   final double length;
@@ -332,28 +332,28 @@ class ElevenNosebleedPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..strokeCap = StrokeCap.round;
 
-    // 1. Dark Coagulated Blood Color (Realism)
-    final bloodColor = const Color(0xFF4A0000); // Deep Dark Red
-    final highlightColor = const Color(0xFF800000); // Lighter red for shine
+    
+    final bloodColor = const Color(0xFF4A0000); 
+    final highlightColor = const Color(0xFF800000); 
 
     final path = Path();
     
-    // Create a tapered trickle shape
+    
     path.moveTo(startPos.dx, startPos.dy);
-    // Left side of stream
+    
     path.lineTo(startPos.dx - 3, startPos.dy + length * 0.5);
     path.lineTo(startPos.dx - 2, startPos.dy + length);
-    // Bottom rounded tip
+    
     path.quadraticBezierTo(startPos.dx, startPos.dy + length + 5, startPos.dx + 2, startPos.dy + length);
-    // Right side of stream
+    
     path.lineTo(startPos.dx + 3, startPos.dy + length * 0.5);
-    path.lineTo(startPos.dx + 4, startPos.dy); // Slightly wider at base (nostril)
+    path.lineTo(startPos.dx + 4, startPos.dy); 
     path.close();
 
-    // Draw Main Blood
+    
     canvas.drawPath(path, paint..color = bloodColor);
 
-    // Draw Shine (Wet look)
+    
     final shinePath = Path();
     shinePath.moveTo(startPos.dx + 1, startPos.dy + 5);
     shinePath.lineTo(startPos.dx + 1, startPos.dy + length - 5);
